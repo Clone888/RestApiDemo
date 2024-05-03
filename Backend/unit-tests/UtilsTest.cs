@@ -53,7 +53,7 @@ public class UtilsTest
     [Fact]
     public void TestIsPasswordGoodEnough()
     {
-                bool strongPassword = Utils.IsPasswordGoodEnough("Password1!");
+        bool strongPassword = Utils.IsPasswordGoodEnough("Password1?!");
         Assert.True(strongPassword);
     }
 }
