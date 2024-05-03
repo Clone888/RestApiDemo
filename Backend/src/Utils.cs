@@ -8,30 +8,29 @@ public static class Utils
 
     public static Arr CreateMockUsers()
     {
-        // Read all mock-users from JSON-file
-        var read = File.ReadAllText(Path.Combine("json", "mock-users.json"));
+        // Read all mock users from the JSON file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
         Arr mockUsers = JSON.Parse(read);
         Arr successFullyWrittenUsers = Arr();
-
         foreach (var user in mockUsers)
         {
             user.password = "12345678";
-
             var result = SQLQueryOne(
-            @"INSERT INTO users(firstName,lastName,email,password)
-        VALUES ($firstName, $lastName, $email, $password)
-        
-        ", user);
-            //If we get an error from the DB then we havent added the mock users, if not we have so add the successful list
+                @"INSERT INTO users(firstName,lastName,email,password)
+                VALUES($firstName, $lastName, $email, $password)
+            ", user);
+            // If we get an error from the DB then we haven't added
+            // the mock users, if not we have so add to the successful list
             if (!result.HasKey("error"))
             {
-                // The spec says return the user list without password.
+                // The specification says return the user list without password
                 user.Delete("password");
                 successFullyWrittenUsers.Push(user);
             }
         }
         return successFullyWrittenUsers;
     }
+
 
     public static bool IsPasswordGoodEnough(string password)
     {
