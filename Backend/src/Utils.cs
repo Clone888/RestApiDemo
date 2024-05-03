@@ -1,0 +1,59 @@
+namespace WebApp;
+public static class Utils
+{
+    public static int SumInts(int a, int b)
+    {
+        return a + b;
+    }
+
+    public static Arr CreateMockUsers()
+    {
+        // Read all mock-users from JSON-file
+        var read = File.ReadAllText(Path.Combine("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
+        Arr successFullyWrittenUsers = Arr();
+
+        foreach (var user in mockUsers)
+        {
+            user.password = "12345678";
+
+            var result = SQLQueryOne(
+            @"INSERT INTO users(firstName,lastName,email,password)
+        VALUES ($firstName, $lastName, $email, $password)
+        
+        ", user);
+            //If we get an error from the DB then we havent added the mock users, if not we have so add the successful list
+            if (!result.HasKey("error"))
+            {
+                // The spec says return the user list without password.
+                user.Delete("password");
+                successFullyWrittenUsers.Push(user);
+            }
+        }
+        return successFullyWrittenUsers;
+    }
+
+    public static bool IsPasswordGoodEnough(string password)
+    {
+        bool strongPassword = false;
+        if (password.Length > 7)
+        {
+            if (password.ToCharArray().Any(char.IsSymbol) || password.ToCharArray().Any(char.IsPunctuation)
+            && password.ToCharArray().Any(char.IsUpper)
+            && password.ToCharArray().Any(char.IsLower)
+            && password.ToCharArray().Any(char.IsDigit))
+            {
+                strongPassword = true;
+            }
+        }
+        else
+        {
+            strongPassword = false;
+        }
+        return strongPassword; 
+    }
+    public static string RemoveBadWords(string badWord)
+    {
+        return string.Empty;
+    }
+}
