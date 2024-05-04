@@ -57,19 +57,27 @@ public class UtilsTest
         Assert.True(strongPassword);
     }
 
-
+/*
     [Fact]
     public void TestRemoveBadWords()
     {
-
+        var input = ("your asshole");
         var read = File.ReadAllText(FilePath("json", "bad-words.json"));
         Arr badWordsList = JSON.Parse(read);
 
-        string inputWord = "Hej ditt asshole";
-        string badWord = "[BADWORD]";
+        var result = Utils.RemoveBadWords();
+        
+        output.WriteLine($"{input}");
+        output.WriteLine($"And filter text {result}");
+        
+        Assert.Equivalent(input, result);
+        output.WriteLine("The test passed!");
+    }
+*/
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
 
-        string okText = Utils.RemoveBadWords(inputWord, badWord);
-        Assert.Equal(okText, inputWord);
     }
 
 

@@ -52,17 +52,25 @@ public static class Utils
         return strongPassword;
     }
 
-    public static string RemoveBadWords(string input)
+    /*
+    public static Arr RemoveBadWords()
     {
         var read = File.ReadAllText(FilePath("json", "bad-words.json"));
         Arr badWordsList = JSON.Parse(read);
+        Arr badWord = Arr();
 
-        string mayContainBadWords = "... bla bla ...";
-        string[] badWords = new string[] {read};
-
-        string[] temp = string.Split(badWords, StringSplitOptions.RemoveEmptyEntries);
-        string cleanString = string.Join("[Censored]", temp);
-
-        return input;
+        foreach (var word in badWordsList)
+        {
+            
+        }
+        return badWord;
     }
+*/
+
+public static Arr RemoveMockUsers()
+{
+    Arr removedUsers = Arr();
+    return removedUsers;
+}
+
 }
