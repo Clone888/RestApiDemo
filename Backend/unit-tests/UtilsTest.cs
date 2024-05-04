@@ -57,27 +57,42 @@ public class UtilsTest
         Assert.True(strongPassword);
     }
 
-/*
-    [Fact]
-    public void TestRemoveBadWords()
-    {
-        var input = ("your asshole");
-        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-        Arr badWordsList = JSON.Parse(read);
+    /*
+        [Fact]
+        public void TestRemoveBadWords()
+        {
+            var input = ("your asshole");
+            var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+            Arr badWordsList = JSON.Parse(read);
 
-        var result = Utils.RemoveBadWords();
-        
-        output.WriteLine($"{input}");
-        output.WriteLine($"And filter text {result}");
-        
-        Assert.Equivalent(input, result);
-        output.WriteLine("The test passed!");
-    }
-*/
+            var result = Utils.RemoveBadWords();
+
+            output.WriteLine($"{input}");
+            output.WriteLine($"And filter text {result}");
+
+            Assert.Equivalent(input, result);
+            output.WriteLine("The test passed!");
+        }
+    */
     [Fact]
     public void TestRemoveMockUsers()
     {
+        //read a JSON-file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
 
+        //sql query
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
+
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+        var result = Utils.RemoveMockUsers();
+
+        Assert.Equivalent(mockUsersInDb, result);
     }
 
 

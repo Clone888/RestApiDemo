@@ -69,8 +69,8 @@ public static class Utils
 
 public static Arr RemoveMockUsers()
 {
-    Arr removedUsers = Arr();
-    return removedUsers;
+    Arr successRemovedUsers = Arr();
+    return successRemovedUsers;
 }
 
 }
