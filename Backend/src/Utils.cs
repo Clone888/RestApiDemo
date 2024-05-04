@@ -55,7 +55,7 @@ public static class Utils
 
     public record TestBadWords(List<string> badwords);
 
-    public static string RemoveBadWords(string inputWord, string replacementWord)
+    public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
     {
         var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
         var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
@@ -115,7 +115,6 @@ public static class Utils
 
             successRemovedUsers.Push(user);
         }
-
         return successRemovedUsers;
     }
 }

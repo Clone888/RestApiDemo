@@ -78,9 +78,9 @@ public class UtilsTest
     [Theory]
     [InlineData("Hi your asshole", "[***]", "Hi your [***]")]
 
-    public void TestRemoveBadWords(string text, string censor, string expected)
+    public void RemoveBadWordsAlt(string text, string censor, string expected)
     {
-        var result = Utils.RemoveBadWords(text, censor);
+        var result = Utils.RemoveBadWordsAlt(text, censor);
         Assert.Equal(expected, result);
     }
 */
