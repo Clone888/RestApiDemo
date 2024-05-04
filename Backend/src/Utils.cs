@@ -31,7 +31,7 @@ public static class Utils
         return successFullyWrittenUsers;
     }
 
-/*
+
     public static bool IsPasswordGoodEnough(string password)
     {
         bool strongPassword = false;
@@ -52,28 +52,45 @@ public static class Utils
         return strongPassword;
     }
 
-    /*
-    public static Arr RemoveBadWords()
-    {
-        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-        Arr badWordsList = JSON.Parse(read);
-        Arr badWord = Arr();
 
-        foreach (var word in badWordsList)
+    public record TestBadWords(List<string> badwords);
+
+    public static string RemoveBadWords(string inputWord, string replacementWord)
+    {
+        var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
+        var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
+
+        foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
         {
-            
+            inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
         }
-        return badWord;
+
+        return inputWord;
     }
 
 
+
+    /*
+        public static Arr RemoveBadWords()
+        {
+            var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+            Arr badWordsList = JSON.Parse(read);
+            Arr badWord = Arr();
+
+            foreach (var word in badWordsList)
+            {
+
+            }
+            return badWord;
+        }
+
+    */
     public static Arr RemoveMockUsers()
     {
         // Read all mock users from the JSON file
         var read = File.ReadAllText(FilePath("json", "mock-users.json"));
         Arr mockUsers = JSON.Parse(read);
         Arr successRemovedUsers = Arr();
-
 
         Arr usersInDb = SQLQuery("SELECT email FROM users");
 
@@ -83,19 +100,22 @@ public static class Utils
         // filter and only keep the mockusers email already in db
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
+
         //Arr mockUserEmails = mockUsersInDb.Map(mockUser => mockUser.email);
 
 
         foreach (var user in mockUsersInDb)
         {
             var removeUser = SQLQuery(
-                @"DELETE FROM users WHERE (firstName,lastName,email,password)
-                VALUES($firstName, $lastName, $email, $password)", user);
+                @"DELETE FROM users WHERE 
+                firstName = $firstName
+                lastName = $lastName
+                email = $email
+                ", user);
 
-                successRemovedUsers.Push(user);
+            successRemovedUsers.Push(user);
         }
 
         return successRemovedUsers;
     }
-*/
 }
