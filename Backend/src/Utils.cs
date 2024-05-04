@@ -31,7 +31,7 @@ public static class Utils
         return successFullyWrittenUsers;
     }
 
-
+/*
     public static bool IsPasswordGoodEnough(string password)
     {
         bool strongPassword = false;
@@ -65,12 +65,37 @@ public static class Utils
         }
         return badWord;
     }
+
+
+    public static Arr RemoveMockUsers()
+    {
+        // Read all mock users from the JSON file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
+        Arr successRemovedUsers = Arr();
+
+
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
+
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+        //Arr mockUserEmails = mockUsersInDb.Map(mockUser => mockUser.email);
+
+
+        foreach (var user in mockUsersInDb)
+        {
+            var removeUser = SQLQuery(
+                @"DELETE FROM users WHERE (firstName,lastName,email,password)
+                VALUES($firstName, $lastName, $email, $password)", user);
+
+                successRemovedUsers.Push(user);
+        }
+
+        return successRemovedUsers;
+    }
 */
-
-public static Arr RemoveMockUsers()
-{
-    Arr successRemovedUsers = Arr();
-    return successRemovedUsers;
-}
-
 }

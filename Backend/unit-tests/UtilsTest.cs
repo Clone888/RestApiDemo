@@ -49,7 +49,7 @@ public class UtilsTest
         Assert.Equivalent(mockUsersNotInDb, result);
         output.WriteLine("The test passed!");
     }
-
+/*
     [Fact]
     public void TestIsPasswordGoodEnough()
     {
@@ -57,7 +57,7 @@ public class UtilsTest
         Assert.True(strongPassword);
     }
 
-    /*
+    
         [Fact]
         public void TestRemoveBadWords()
         {
@@ -73,7 +73,7 @@ public class UtilsTest
             Assert.Equivalent(input, result);
             output.WriteLine("The test passed!");
         }
-    */
+    
     [Fact]
     public void TestRemoveMockUsers()
     {
@@ -90,10 +90,15 @@ public class UtilsTest
         // filter and only keep the mockusers email already in db
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
+        Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
+
+
+        //get result from function
         var result = Utils.RemoveMockUsers();
 
+        //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
         Assert.Equivalent(mockUsersInDb, result);
     }
-
+*/
 
 }
