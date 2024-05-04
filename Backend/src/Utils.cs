@@ -49,10 +49,20 @@ public static class Utils
         {
             strongPassword = false;
         }
-        return strongPassword; 
+        return strongPassword;
     }
-    public static string RemoveBadWords(string badWord)
+
+    public static string RemoveBadWords(string input)
     {
-        return string.Empty;
+        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+        Arr badWordsList = JSON.Parse(read);
+
+        string mayContainBadWords = "... bla bla ...";
+        string[] badWords = new string[] {read};
+
+        string[] temp = string.Split(badWords, StringSplitOptions.RemoveEmptyEntries);
+        string cleanString = string.Join("[Censored]", temp);
+
+        return input;
     }
 }

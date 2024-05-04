@@ -56,4 +56,21 @@ public class UtilsTest
         bool strongPassword = Utils.IsPasswordGoodEnough("Password1?!");
         Assert.True(strongPassword);
     }
+
+
+    [Fact]
+    public void TestRemoveBadWords()
+    {
+
+        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+        Arr badWordsList = JSON.Parse(read);
+
+        string inputWord = "Hej ditt asshole";
+        string badWord = "[BADWORD]";
+
+        string okText = Utils.RemoveBadWords(inputWord, badWord);
+        Assert.Equal(okText, inputWord);
+    }
+
+
 }
