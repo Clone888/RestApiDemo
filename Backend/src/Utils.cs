@@ -83,8 +83,8 @@ public static class Utils
             }
             return badWord;
         }
-
     */
+    
     public static Arr RemoveMockUsers()
     {
         // Read all mock users from the JSON file
@@ -100,16 +100,10 @@ public static class Utils
         // filter and only keep the mockusers email already in db
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
-
-        //Arr mockUserEmails = mockUsersInDb.Map(mockUser => mockUser.email);
-
-
         foreach (var user in mockUsersInDb)
         {
             var removeUser = SQLQuery(
-                @"DELETE FROM users WHERE 
-                firstName = $firstName
-                lastName = $lastName
+                @"DELETE FROM users WHERE
                 email = $email
                 ", user);
 

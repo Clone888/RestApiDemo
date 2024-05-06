@@ -108,6 +108,7 @@ public class UtilsTest
             //get result from function
             var result = Utils.RemoveMockUsers();
 
+            output.WriteLine(usersInDb.ToString());
             output.WriteLine(emailsInDb.ToString());
             output.WriteLine(result.ToString());
 

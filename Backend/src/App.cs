@@ -13,7 +13,7 @@ Globals = Obj(new
 });
 
 //erver.Start();
-WebApp.Utils.RemoveMockUsers();
-//WebApp.Utils.CreateMockUsers();
+//WebApp.Utils.RemoveMockUsers();
+WebApp.Utils.CreateMockUsers();
 //new WebApp.UtilsTest.TestCreateMockUsers();
 
