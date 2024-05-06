@@ -108,10 +108,6 @@ public class UtilsTest
             //get result from function
             var result = Utils.RemoveMockUsers();
 
-            output.WriteLine(usersInDb.ToString());
-            output.WriteLine(emailsInDb.ToString());
-            output.WriteLine(result.ToString());
-
             //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
             Assert.Equivalent(mockUsersInDb, result);
         }
