@@ -8,30 +8,29 @@ public static class Utils
 
     public static Arr CreateMockUsers()
     {
-        // Read all mock-users from JSON-file
-        var read = File.ReadAllText(Path.Combine("json", "mock-users.json"));
+        // Read all mock users from the JSON file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
         Arr mockUsers = JSON.Parse(read);
         Arr successFullyWrittenUsers = Arr();
-
         foreach (var user in mockUsers)
         {
             user.password = "12345678";
-
             var result = SQLQueryOne(
-            @"INSERT INTO users(firstName,lastName,email,password)
-        VALUES ($firstName, $lastName, $email, $password)
-        
-        ", user);
-            //If we get an error from the DB then we havent added the mock users, if not we have so add the successful list
+                @"INSERT INTO users(firstName,lastName,email,password)
+                VALUES($firstName, $lastName, $email, $password)
+            ", user);
+            // If we get an error from the DB then we haven't added
+            // the mock users, if not we have so add to the successful list
             if (!result.HasKey("error"))
             {
-                // The spec says return the user list without password.
+                // The specification says return the user list without password
                 user.Delete("password");
                 successFullyWrittenUsers.Push(user);
             }
         }
         return successFullyWrittenUsers;
     }
+
 
     public static bool IsPasswordGoodEnough(string password)
     {
@@ -50,10 +49,66 @@ public static class Utils
         {
             strongPassword = false;
         }
-        return strongPassword; 
+        return strongPassword;
     }
-    public static string RemoveBadWords(string badWord)
+
+
+    public record TestBadWords(List<string> badwords);
+
+    public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
     {
-        return string.Empty;
+        var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
+        var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
+
+        foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
+        {
+            inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        return inputWord;
+    }
+
+
+
+    /*
+        public static Arr RemoveBadWords()
+        {
+            var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+            Arr badWordsList = JSON.Parse(read);
+            Arr badWord = Arr();
+
+            foreach (var word in badWordsList)
+            {
+
+            }
+            return badWord;
+        }
+    */
+    
+    public static Arr RemoveMockUsers()
+    {
+        // Read all mock users from the JSON file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
+        Arr successRemovedUsers = Arr();
+
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
+
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+        foreach (var user in mockUsersInDb)
+        {
+            var removeUser = SQLQuery(
+                @"DELETE FROM users WHERE
+                email = $email
+                ", user);
+
+            successRemovedUsers.Push(user);
+        }
+        return successRemovedUsers;
     }
 }

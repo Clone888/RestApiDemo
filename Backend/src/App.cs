@@ -1,4 +1,5 @@
 // Global settings
+
 Globals = Obj(new
 {
     debugOn = true,
@@ -11,4 +12,8 @@ Globals = Obj(new
     sessionLifeTimeHours = 2
 });
 
-Server.Start();
+//erver.Start();
+//WebApp.Utils.RemoveMockUsers();
+WebApp.Utils.CreateMockUsers();
+//new WebApp.UtilsTest.TestCreateMockUsers();
+
