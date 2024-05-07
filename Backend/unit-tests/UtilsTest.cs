@@ -1,23 +1,7 @@
-using System.ComponentModel.Design;
-using Xunit;
-using Xunit.Abstractions;
-
 namespace WebApp;
-public class UtilsTest
+public class UtilsTest(Xlog output)
 {
-    // The following lines are needed to get 
-    // output to the Console to work in xUnit tests!
-    // (also needs the using Xunit.Abstractions)
-    // Note: You need to use the following command line command 
-    // dotnet test --logger "console;verbosity=detailed"
-    // for the logging to work
-    private readonly ITestOutputHelper output;
-    public UtilsTest(ITestOutputHelper output)
-    {
-        this.output = output;
-    }
-
-    /*
+    
         [Fact]
         // A simple initial example
         public void TestSumInt()
@@ -55,11 +39,11 @@ public class UtilsTest
         [Fact]
         public void TestIsPasswordGoodEnough()
         {
-            bool strongPassword = Utils.IsPasswordGoodEnough("Password1?!");
+            bool strongPassword = Utils.IsPasswordGoodEnough("Password1!");
             Assert.True(strongPassword);
         }
 
-
+/*
             [Fact]
             public void TestRemoveBadWords()
             {
