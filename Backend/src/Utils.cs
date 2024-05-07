@@ -84,7 +84,7 @@ public static class Utils
             return badWord;
         }
     */
-    
+
     public static Arr RemoveMockUsers()
     {
         // Read all mock users from the JSON file
@@ -111,4 +111,16 @@ public static class Utils
         }
         return successRemovedUsers;
     }
+
+    public static Obj CountDomainsFromUserEmails()
+    {
+
+        Obj domainsCounted = Obj();
+
+
+        return domainsCounted;
+    }
+
+
+
 }

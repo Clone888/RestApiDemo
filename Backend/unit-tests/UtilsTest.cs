@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -86,31 +87,54 @@ public class UtilsTest
 */
 
 
-    
-        [Fact]
-        public void TestRemoveMockUsers()
+
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
+        //read a JSON-file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
+
+        //sql query
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
+
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+        Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
+
+        //get result from function
+        var result = Utils.RemoveMockUsers();
+
+        //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
+        Assert.Equivalent(mockUsersInDb, result);
+    }
+
+
+    [[Fact]
+    public void TestCountDomainsFromUserEmails()
+    {
+        Arr users = SQLQuery("SELECT * FROM users");
+        Obj domainsInDB = Obj();
+
+        foreach (var user in users)
         {
-            //read a JSON-file
-            var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-            Arr mockUsers = JSON.Parse(read);
+            string domain = user.email.Split('@')[1];
 
-            //sql query
-            Arr usersInDb = SQLQuery("SELECT email FROM users");
-
-            // Create a list of users based on user-email
-            Arr emailsInDb = usersInDb.Map(user => user.email);
-
-            // filter and only keep the mockusers email already in db
-            Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
-
-            Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
-
-            //get result from function
-            var result = Utils.RemoveMockUsers();
-
-            //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
-            Assert.Equivalent(mockUsersInDb, result);
+            if (!domainsInDB.HasKey(domain))
+            {
+                domainsInDB[domain] = 1;
+            }
+            else
+            {
+                domainsInDB[domain]++;
+            }
         }
+Assert.Equivalent(domainsInDB, Utils.CountDomainsFromUserEmails)
+    }
     
 
 }
