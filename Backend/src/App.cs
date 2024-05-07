@@ -7,7 +7,7 @@ Globals = Obj(new
     aclOn = true,
     isSpa = true,
     port = 3001,
-    serverName = "Ironboy's Minimal API Server",
+    serverName = "API Server",
     frontendPath = FilePath("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
