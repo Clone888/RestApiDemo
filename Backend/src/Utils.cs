@@ -67,9 +67,6 @@ public static class Utils
         return inputWord;
     }
 
-
-
-    
         public static Arr RemoveBadWords()
         {
             var read = File.ReadAllText(FilePath("json", "bad-words.json"));
