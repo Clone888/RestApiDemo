@@ -50,7 +50,8 @@ public class UtilsTest
             Assert.Equivalent(mockUsersNotInDb, result);
             output.WriteLine("The test passed!");
         }
-    /*
+    
+
         [Fact]
         public void TestIsPasswordGoodEnough()
         {
@@ -84,7 +85,7 @@ public class UtilsTest
         var result = Utils.RemoveBadWordsAlt(text, censor);
         Assert.Equal(expected, result);
     }
-*/
+
 
 
 
@@ -113,8 +114,9 @@ public class UtilsTest
         Assert.Equivalent(mockUsersInDb, result);
     }
 
-
-    [[Fact]
+*/
+/*
+    [Fact]
     public void TestCountDomainsFromUserEmails()
     {
         Arr users = SQLQuery("SELECT * FROM users");
@@ -133,8 +135,7 @@ public class UtilsTest
                 domainsInDB[domain]++;
             }
         }
-Assert.Equivalent(domainsInDB, Utils.CountDomainsFromUserEmails)
+        Assert.Equivalent(domainsInDB, Utils.CountDomainsFromUserEmails());
     }
-    
-
+    */
 }

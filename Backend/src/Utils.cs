@@ -14,7 +14,6 @@ public static class Utils
         Arr successFullyWrittenUsers = Arr();
         foreach (var user in mockUsers)
         {
-            user.password = "12345678";
             var result = SQLQueryOne(
                 @"INSERT INTO users(firstName,lastName,email,password)
                 VALUES($firstName, $lastName, $email, $password)
@@ -70,7 +69,7 @@ public static class Utils
 
 
 
-    /*
+    
         public static Arr RemoveBadWords()
         {
             var read = File.ReadAllText(FilePath("json", "bad-words.json"));
@@ -83,7 +82,7 @@ public static class Utils
             }
             return badWord;
         }
-    */
+    
 
     public static Arr RemoveMockUsers()
     {
@@ -111,16 +110,35 @@ public static class Utils
         }
         return successRemovedUsers;
     }
+    
+    /*
+        public static Obj CountDomainsFromUserEmails()
+        {
+            Arr domainsInDB = SQLQueryOne("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
+            Obj domainsCounted = Obj();
 
+            foreach (var email in domainsInDB)
+            {
+                if (email.domain != null)
+                {
+                domainsCounted[email.domain] = email.id;
+                }
+            }
+            Log(domainsInDB);
+            return domainsCounted;
+        }
+    
     public static Obj CountDomainsFromUserEmails()
     {
-
-        Obj domainsCounted = Obj();
-
-
+        Arr users = SQLQueryOne("SELECT SUBSTRING(email, INSTR(email, '@') + 1, length(email) AS domain, count(id) AS id FROM users GROUP BY domain");
+        Obj domainsCounted = new Obj();
+        foreach (var email in users)
+        {
+            domainsCounted[email.domain] = email.id;
+        }
         return domainsCounted;
     }
 
-
+*/
 
 }
