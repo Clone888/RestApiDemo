@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace WebApp;
 public static class Utils
 {
@@ -31,83 +33,98 @@ public static class Utils
     }
 
 
-    public static bool IsPasswordGoodEnough(string password)
+    public static bool IsPasswordGoodEnough()
     {
         bool strongPassword = false;
-        if (password.Length > 7)
+
+        var passwordInDB = SQLQuery(
+                @"SELECT password FROM users");
+
+            Log($"HERE IS THE DB-RESULT: {passwordInDB.ToString()}");
+
+
+
+        for (int i = 0; i < passwordInDB.Length; i++)
         {
-            if (password.ToCharArray().Any(char.IsSymbol) || password.ToCharArray().Any(char.IsPunctuation)
-            && password.ToCharArray().Any(char.IsUpper)
-            && password.ToCharArray().Any(char.IsLower)
-            && password.ToCharArray().Any(char.IsDigit))
+            char currentChar = passwordInDB[i];
+
+            if (passwordInDB.Length > 7 &&
+                (char.IsSymbol(currentChar) || char.IsPunctuation(currentChar)) &&
+                char.IsUpper(currentChar) &&
+                char.IsLower(currentChar) &&
+                char.IsDigit(currentChar))
             {
                 strongPassword = true;
+                break; 
+            }
+            else
+            {
+                strongPassword = false;
+                break;
             }
         }
-        else
-        {
-            strongPassword = false;
-        }
+
         return strongPassword;
     }
-
-
-    public record TestBadWords(List<string> badwords);
-
-    public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
-    {
-        var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
-        var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
-
-        foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
-        {
-            inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        return inputWord;
-    }
-
-        public static Arr RemoveBadWords()
-        {
-            var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-            Arr badWordsList = JSON.Parse(read);
-            Arr badWord = Arr();
-
-            foreach (var word in badWordsList)
-            {
-
-            }
-            return badWord;
-        }
     
 
-    public static Arr RemoveMockUsers()
+
+public record TestBadWords(List<string> badwords);
+
+public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
+{
+    var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
+    var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
+
+    foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
     {
-        // Read all mock users from the JSON file
-        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-        Arr mockUsers = JSON.Parse(read);
-        Arr successRemovedUsers = Arr();
+        inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
+    }
 
-        Arr usersInDb = SQLQuery("SELECT email FROM users");
+    return inputWord;
+}
 
-        // Create a list of users based on user-email
-        Arr emailsInDb = usersInDb.Map(user => user.email);
+public static Arr RemoveBadWords()
+{
+    var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+    Arr badWordsList = JSON.Parse(read);
+    Arr badWord = Arr();
 
-        // filter and only keep the mockusers email already in db
-        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+    foreach (var word in badWordsList)
+    {
 
-        foreach (var user in mockUsersInDb)
-        {
-            var removeUser = SQLQuery(
-                @"DELETE FROM users WHERE
+    }
+    return badWord;
+}
+
+
+public static Arr RemoveMockUsers()
+{
+    // Read all mock users from the JSON file
+    var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+    Arr mockUsers = JSON.Parse(read);
+    Arr successRemovedUsers = Arr();
+
+    Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+    // Create a list of users based on user-email
+    Arr emailsInDb = usersInDb.Map(user => user.email);
+
+    // filter and only keep the mockusers email already in db
+    Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+    foreach (var user in mockUsersInDb)
+    {
+        var removeUser = SQLQuery(
+            @"DELETE FROM users WHERE
                 email = $email
                 ", user);
 
-            successRemovedUsers.Push(user);
-        }
-        return successRemovedUsers;
+        successRemovedUsers.Push(user);
     }
-    
+    return successRemovedUsers;
+}
+
     /*
         public static Obj CountDomainsFromUserEmails()
         {

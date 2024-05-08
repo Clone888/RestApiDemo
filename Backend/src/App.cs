@@ -14,6 +14,6 @@ Globals = Obj(new
 
 Server.Start();
 //WebApp.Utils.RemoveMockUsers();
-//WebApp.Utils.CreateMockUsers();
+//WebApp.Utils.IsPasswordGoodEnough();
 //new WebApp.UtilsTest.TestCreateMockUsers();
 //WebApp.Utils.CountDomainsFromUserEmails();

@@ -39,7 +39,8 @@ public class UtilsTest(Xlog output)
         [Fact]
         public void TestIsPasswordGoodEnough()
         {
-            bool strongPassword = Utils.IsPasswordGoodEnough("Password1!");
+            bool strongPassword = Utils.IsPasswordGoodEnough();
+            output.WriteLine($"THE TEST RESULT = {strongPassword}");
             Assert.True(strongPassword);
         }
 
