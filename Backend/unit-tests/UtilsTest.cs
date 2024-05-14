@@ -44,26 +44,12 @@ public class UtilsTest(Xlog output)
             Assert.True(strongPassword);
         }
 
-/*
-            [Fact]
-            public void TestRemoveBadWords()
-            {
-                var input = ("your asshole");
-                var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-                Arr badWordsList = JSON.Parse(read);
-
-                var result = Utils.RemoveBadWords();
-
-                output.WriteLine($"{input}");
-                output.WriteLine($"And filter text {result}");
-
-                Assert.Equivalent(input, result);
-                output.WriteLine("The test passed!");
-            }
-        
+/* 
 
     [Theory]
     [InlineData("Hi your asshole", "[***]", "Hi your [***]")]
+    [InlineData("Hi your asshole I think you are a bitch", "[***]", "Hi your [***] I think ypu are a [***]")]
+
 
     public void RemoveBadWordsAlt(string text, string censor, string expected)
     {

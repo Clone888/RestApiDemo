@@ -1405,6 +1405,18 @@
 		},
 		{
 			"name": "Login as user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -1545,7 +1557,6 @@
 							"// Get the current category",
 							"let category = testData.categories[testData.counter];",
 							"",
-							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", category.id); "
 						],
 						"type": "text/javascript",
@@ -1963,9 +1974,7 @@
 							"let categoryWithMatchingName = testData.categories.find(category => {",
 							"    return category.name == product.categoryId",
 							"});",
-							"// Change the categoryId property of the product",
-							"// to the id of the matching category",
-							"product.categoryId = categoryWithMatchingName?.id;",
+							"",
 							"",
 							"// Save changes to our test data (the new value of categoryId)",
 							"pm.collectionVariables.set(\"testData\",testData);",
@@ -2037,6 +2046,7 @@
 						"exec": [
 							"// Get the test data",
 							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
 							"// Get the current product",
 							"let product = testData.products[testData.counter];",
 							"",
@@ -2065,7 +2075,6 @@
 							"// If there are more products - then \"loop\"",
 							"// through them using setNextRequest",
 							"if(testData.products[testData.counter]){",
-							"    console.log(\"HALLÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ!\")",
 							"    pm.execution.setNextRequest(\"Get products AS user\");",
 							"}",
 							"// Otherwise console.log \"All done\"",
@@ -2372,6 +2381,104 @@
 						"api",
 						"products",
 						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create comments AS user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current comments",
+							"let comment = testData.comments[testData.counter];",
+							"",
+							"// Save changes to our test data (the new value of categoryId)",
+							"pm.collectionVariables.set(\"testData\",testData);",
+							"",
+							"// pm variables have a scope of one request",
+							"// setting four variables used in the body",
+							"pm.variables.set(\"comment\", comment.comment);",
+							"pm.variables.set(\"userId\", comment.userId);",
+							"pm.variables.set(\"productId\", comment.productId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"// Get the current comment",
+							"let comment = testData.comments[testData.counter];",
+							"",
+							"// Read the response",
+							"let response = pm.response;",
+							"// Read the response data",
+							"let responseData = pm.response.json();",
+							"",
+							"// Test that we get a 200 code (ok request) back",
+							"pm.test(\"We should get an OK (code 200) back\",()=> {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Update the counter and save the updated test data",
+							"// (also including the id we set in the second test)",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\",testData);",
+							"",
+							"// If there are more comments - then \"loop\"",
+							"// through them using setNextRequest",
+							"if(testData.comments[testData.counter]){",
+							"    pm.execution.setNextRequest(\"Create comments AS user\");",
+							"}",
+							"// Otherwise console.log \"All done\"",
+							"else {",
+							"    console.log(\"All comments have been created.\");",
+							"    // IMPORTANT: Set counter to 0 in preparation of next request",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\",testData);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"userId\": {{userId}},\n    \"productId\": {{productId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"comments"
 					]
 				}
 			},
@@ -3189,9 +3296,6 @@
 							"let categoryWithMatchingName = testData.categories.find(category => {",
 							"    return category.name == product.categoryId",
 							"});",
-							"// Change the categoryId property of the product",
-							"// to the id of the matching category",
-							"product.categoryId = categoryWithMatchingName?.id;",
 							"",
 							"// Save changes to our test data (the new value of categoryId)",
 							"pm.collectionVariables.set(\"testData\",testData);",
@@ -3504,6 +3608,104 @@
 						"api",
 						"products",
 						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create comments AS visitor",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current comments",
+							"let comment = testData.comments[testData.counter];",
+							"",
+							"// Save changes to our test data (the new value of categoryId)",
+							"pm.collectionVariables.set(\"testData\",testData);",
+							"",
+							"// pm variables have a scope of one request",
+							"// setting four variables used in the body",
+							"pm.variables.set(\"comment\", comment.comment);",
+							"pm.variables.set(\"userId\", comment.userId);",
+							"pm.variables.set(\"productId\", comment.productId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"// Get the current comment",
+							"let comment = testData.comments[testData.counter];",
+							"",
+							"// Read the response",
+							"let response = pm.response;",
+							"// Read the response data",
+							"let responseData = pm.response.json();",
+							"",
+							"// Test that we get a 405 code (not allowed) back",
+							"pm.test(\"We should get an not allowed (code 405) back\",()=> {",
+							"    pm.expect(response.code).to.equal(405);",
+							"});",
+							"",
+							"// Update the counter and save the updated test data",
+							"// (also including the id we set in the second test)",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\",testData);",
+							"",
+							"// If there are more comments - then \"loop\"",
+							"// through them using setNextRequest",
+							"if(testData.comments[testData.counter]){",
+							"    pm.execution.setNextRequest(\"Create comments AS visitor\");",
+							"}",
+							"// Otherwise console.log \"All done\"",
+							"else {",
+							"    console.log(\"Due to 405 'not allowed'. No comments have been created.\");",
+							"    // IMPORTANT: Set counter to 0 in preparation of next request",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\",testData);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"userId\": {{userId}},\n    \"productId\": {{productId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"comments"
 					]
 				}
 			},

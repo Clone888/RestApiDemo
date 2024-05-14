@@ -49,10 +49,10 @@ public static class Utils
             char currentChar = passwordInDB[i];
 
             if (passwordInDB.Length > 7 &&
-                (char.IsSymbol(currentChar) || char.IsPunctuation(currentChar)) &&
+                (!char.IsLetterOrDigit(currentChar)&&
                 char.IsUpper(currentChar) &&
                 char.IsLower(currentChar) &&
-                char.IsDigit(currentChar))
+                char.IsDigit(currentChar)))
             {
                 strongPassword = true;
                 break; 
@@ -82,19 +82,6 @@ public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
     }
 
     return inputWord;
-}
-
-public static Arr RemoveBadWords()
-{
-    var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-    Arr badWordsList = JSON.Parse(read);
-    Arr badWord = Arr();
-
-    foreach (var word in badWordsList)
-    {
-
-    }
-    return badWord;
 }
 
 
