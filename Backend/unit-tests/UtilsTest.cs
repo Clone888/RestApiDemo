@@ -83,8 +83,13 @@ public class UtilsTest(Xlog output)
 
         Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
 
+
         //get result from function
         var result = Utils.RemoveMockUsers();
+
+        output.WriteLine($"The test expected that {mockUsersInDb.Length} users should be REMOVED.");
+        //Print all users that being removed without password
+        output.WriteLine($"And {JSON.Stringify(result)} users were REMOVED.");
 
         //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
         Assert.Equivalent(mockUsersInDb, result);

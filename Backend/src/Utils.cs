@@ -89,12 +89,17 @@ public static class Utils
 
         foreach (var user in mockUsersInDb)
         {
-            var removeUser = SQLQuery(
+            var removeUser = SQLQueryOne(
                 @"DELETE FROM users WHERE
                 email = $email
                 ", user);
 
-            successRemovedUsers.Push(user);
+
+            if (!removeUser.HasKey("error"))
+            {
+                user.Delete("password");
+                successRemovedUsers.Push(user);
+            }
         }
         return successRemovedUsers;
     }
