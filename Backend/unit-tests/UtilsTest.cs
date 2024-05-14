@@ -49,48 +49,48 @@ public class UtilsTest(Xlog output)
     }
 
 
-    /* 
-
-        [Theory]
-        [InlineData("Hi your asshole", "[***]", "Hi your [***]")]
-        [InlineData("Hi your asshole I think you are a bitch", "[***]", "Hi your [***] I think ypu are a [***]")]
 
 
-        public void RemoveBadWordsAlt(string text, string censor, string expected)
-        {
-            var result = Utils.RemoveBadWordsAlt(text, censor);
-            Assert.Equal(expected, result);
-        }
+    [Theory]
+    [InlineData("Hi your asshole", "[***]", "Hi your [***]")]
+    [InlineData("Hi your asshole I think you are a bitch", "[***]", "Hi your [***] I think you are a [***]")]
+
+
+    public void RemoveBadWordsAlt(string text, string censor, string expected)
+    {
+        var result = Utils.RemoveBadWordsAlt(text, censor);
+        Assert.Equal(expected, result);
+    }
 
 
 
 
-        [Fact]
-        public void TestRemoveMockUsers()
-        {
-            //read a JSON-file
-            var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-            Arr mockUsers = JSON.Parse(read);
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
+        //read a JSON-file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
 
-            //sql query
-            Arr usersInDb = SQLQuery("SELECT email FROM users");
+        //sql query
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
 
-            // Create a list of users based on user-email
-            Arr emailsInDb = usersInDb.Map(user => user.email);
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
 
-            // filter and only keep the mockusers email already in db
-            Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
-            Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
+        Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
 
-            //get result from function
-            var result = Utils.RemoveMockUsers();
+        //get result from function
+        var result = Utils.RemoveMockUsers();
 
-            //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
-            Assert.Equivalent(mockUsersInDb, result);
-        }
+        //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
+        Assert.Equivalent(mockUsersInDb, result);
+    }
 
-    */
+
     /*
         [Fact]
         public void TestCountDomainsFromUserEmails()
