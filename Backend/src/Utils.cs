@@ -33,84 +33,71 @@ public static class Utils
     }
 
 
-    public static bool IsPasswordGoodEnough()
+    public static bool IsPasswordGoodEnough(string password)
     {
         bool strongPassword = false;
-
-        var passwordInDB = SQLQuery(
-                @"SELECT password FROM users");
-
-            Log($"HERE IS THE DB-RESULT: {passwordInDB.ToString()}");
-
-
-
-        for (int i = 0; i < passwordInDB.Length; i++)
+        if (password.Length > 7)
         {
-            char currentChar = passwordInDB[i];
-
-            if (passwordInDB.Length > 7 &&
-                (!char.IsLetterOrDigit(currentChar)&&
-                char.IsUpper(currentChar) &&
-                char.IsLower(currentChar) &&
-                char.IsDigit(currentChar)))
+            if (password.ToCharArray().Any(char.IsSymbol) || password.ToCharArray().Any(char.IsPunctuation)
+            && password.ToCharArray().Any(char.IsUpper)
+            && password.ToCharArray().Any(char.IsLower)
+            && password.ToCharArray().Any(char.IsDigit))
             {
                 strongPassword = true;
-                break; 
-            }
-            else
-            {
-                strongPassword = false;
-                break;
             }
         }
-
+        else
+        {
+            strongPassword = false;
+        }
         return strongPassword;
     }
-    
 
 
-public record TestBadWords(List<string> badwords);
 
-public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
-{
-    var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
-    var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
 
-    foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
+    public record TestBadWords(List<string> badwords);
+
+    public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
     {
-        inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
+        var readBadWords = File.ReadAllText(FilePath("json", "bad-words.json"));
+        var badwords = JsonSerializer.Deserialize<TestBadWords>(readBadWords);
+
+        foreach (var word in badwords.badwords.OrderByDescending(x => x.Length))
+        {
+            inputWord = inputWord.Replace(word, replacementWord, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        return inputWord;
     }
 
-    return inputWord;
-}
 
-
-public static Arr RemoveMockUsers()
-{
-    // Read all mock users from the JSON file
-    var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-    Arr mockUsers = JSON.Parse(read);
-    Arr successRemovedUsers = Arr();
-
-    Arr usersInDb = SQLQuery("SELECT email FROM users");
-
-    // Create a list of users based on user-email
-    Arr emailsInDb = usersInDb.Map(user => user.email);
-
-    // filter and only keep the mockusers email already in db
-    Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
-
-    foreach (var user in mockUsersInDb)
+    public static Arr RemoveMockUsers()
     {
-        var removeUser = SQLQuery(
-            @"DELETE FROM users WHERE
+        // Read all mock users from the JSON file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
+        Arr successRemovedUsers = Arr();
+
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
+
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+        foreach (var user in mockUsersInDb)
+        {
+            var removeUser = SQLQuery(
+                @"DELETE FROM users WHERE
                 email = $email
                 ", user);
 
-        successRemovedUsers.Push(user);
+            successRemovedUsers.Push(user);
+        }
+        return successRemovedUsers;
     }
-    return successRemovedUsers;
-}
 
     /*
         public static Obj CountDomainsFromUserEmails()
