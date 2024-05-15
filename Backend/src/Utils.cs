@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace WebApp;
 public static class Utils
 {
+    /*
     public static int SumInts(int a, int b)
     {
         return a + b;
@@ -104,7 +105,7 @@ public static class Utils
         return successRemovedUsers;
     }
 
-    /*
+    
         public static Obj CountDomainsFromUserEmails()
         {
             Arr domainsInDB = SQLQueryOne("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
