@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace WebApp;
 public static class Utils
 {
-    /*
+
     public static int SumInts(int a, int b)
     {
         return a + b;
@@ -105,34 +105,37 @@ public static class Utils
         return successRemovedUsers;
     }
 
-    
-        public static Obj CountDomainsFromUserEmails()
-        {
-            Arr domainsInDB = SQLQueryOne("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
-            Obj domainsCounted = Obj();
 
-            foreach (var email in domainsInDB)
-            {
-                if (email.domain != null)
-                {
-                domainsCounted[email.domain] = email.id;
-                }
-            }
-            Log(domainsInDB);
-            return domainsCounted;
-        }
-    
     public static Obj CountDomainsFromUserEmails()
     {
-        Arr users = SQLQueryOne("SELECT SUBSTRING(email, INSTR(email, '@') + 1, length(email) AS domain, count(id) AS id FROM users GROUP BY domain");
-        Obj domainsCounted = new Obj();
-        foreach (var email in users)
+        Arr domainsInDB = SQLQueryOne("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
+        Obj domainsCounted = Obj();
+
+        foreach (var email in domainsInDB)
         {
-            domainsCounted[email.domain] = email.id;
+            if (email.domain != null)
+            {
+                domainsCounted[email.domain] = email.id;
+            }
         }
+        Log(domainsInDB);
         return domainsCounted;
     }
 
-*/
 
+    //Kommenterat ut detta stycket för att slippa få felmeddelande pga att det inte finns några domains 
+    // för att "RemoveMockUsers" är körd.
+
+    /*
+        public static Obj CountDomainsFromUserEmails()
+        {
+            Arr users = SQLQueryOne("SELECT SUBSTRING(email, INSTR(email, '@') + 1, length(email) AS domain, count(id) AS id FROM users GROUP BY domain");
+            Obj domainsCounted = new Obj();
+            foreach (var email in users)
+            {
+                domainsCounted[email.domain] = email.id;
+            }
+            return domainsCounted;
+        }
+        */
 }
