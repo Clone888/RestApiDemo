@@ -1,3 +1,6 @@
+# Here I do the homework with Scenario and after testing the "Alla"-category
+# I switch to "Pets"-category in line 30
+
 Feature: Show correct price to the product
 
     Scenario: Check that the correct price is displayed for the correct product.
