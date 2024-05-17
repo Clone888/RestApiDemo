@@ -56,7 +56,7 @@ public static class Utils
 
 
 
-
+    // Test att göra det utan Dyndata
     public record TestBadWords(List<string> badwords);
 
     public static string RemoveBadWordsAlt(string inputWord, string replacementWord)
