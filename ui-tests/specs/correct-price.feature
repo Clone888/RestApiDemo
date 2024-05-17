@@ -24,3 +24,8 @@ Feature: Show correct price to the product
         And I should see the price "4700" for the product "Bird"
         And I should see the price "50" for the product "Shorts"
         And I should see the price "48500" for the product "Dyndata Instructions"
+        When I choose the category "Pets"
+        Then I should see the price "7000" for the product "Dog"
+        And I should see the price "300" for the product "Cat"
+        And I should see the price "150" for the product "Fish"
+        And I should see the price "4700" for the product "Bird"
