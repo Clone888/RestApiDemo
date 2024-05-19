@@ -64,7 +64,7 @@ public class UtilsTest(Xlog output)
     }
 
     // Kommentera in TestRemoveMockUsers när testet ska köras så att 
-    // TestCountDomainsFromUserEmails har data att räkna på.
+    // TestCountDomainsFromUserEmails har mer data att räkna på.
     /*
 
         [Fact]
@@ -125,6 +125,4 @@ public class UtilsTest(Xlog output)
         output.WriteLine("Here are domains in DB" + domainsInDB.ToString());
         Assert.Equivalent(domainsInDB, Utils.CountDomainsFromUserEmails());
     }
-
-
 }
