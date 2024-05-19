@@ -72,43 +72,43 @@ public static class Utils
         return inputWord;
     }
 
-
-    public static Arr RemoveMockUsers()
-    {
-        // Read all mock users from the JSON file
-        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-        Arr mockUsers = JSON.Parse(read);
-        Arr successRemovedUsers = Arr();
-
-        Arr usersInDb = SQLQuery("SELECT email FROM users");
-
-        // Create a list of users based on user-email
-        Arr emailsInDb = usersInDb.Map(user => user.email);
-
-        // filter and only keep the mockusers email already in db
-        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
-
-        foreach (var user in mockUsersInDb)
+    /*
+        public static Arr RemoveMockUsers()
         {
-            var removeUser = SQLQueryOne(
-                @"DELETE FROM users WHERE
-                email = $email
-                ", user);
+            // Read all mock users from the JSON file
+            var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+            Arr mockUsers = JSON.Parse(read);
+            Arr successRemovedUsers = Arr();
 
+            Arr usersInDb = SQLQuery("SELECT email FROM users");
 
-            if (!removeUser.HasKey("error"))
+            // Create a list of users based on user-email
+            Arr emailsInDb = usersInDb.Map(user => user.email);
+
+            // filter and only keep the mockusers email already in db
+            Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+
+            foreach (var user in mockUsersInDb)
             {
-                user.Delete("password");
-                successRemovedUsers.Push(user);
-            }
-        }
-        return successRemovedUsers;
-    }
+                var removeUser = SQLQueryOne(
+                    @"DELETE FROM users WHERE
+                    email = $email
+                    ", user);
 
+
+                if (!removeUser.HasKey("error"))
+                {
+                    user.Delete("password");
+                    successRemovedUsers.Push(user);
+                }
+            }
+            return successRemovedUsers;
+        }
+*/
 
     public static Obj CountDomainsFromUserEmails()
     {
-        Arr domainsInDB = SQLQueryOne("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
+        Arr domainsInDB = SQLQuery("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
         Obj domainsCounted = Obj();
 
         foreach (var email in domainsInDB)
@@ -118,15 +118,14 @@ public static class Utils
                 domainsCounted[email.domain] = email.id;
             }
         }
-        Log(domainsInDB);
         return domainsCounted;
     }
 
-
-    //Kommenterat ut detta stycket för att slippa få felmeddelande pga att det inte finns några domains 
-    // för att "RemoveMockUsers" är körd.
-
     /*
+        //Kommenterat ut detta stycket för att slippa få felmeddelande pga att det inte finns några domains 
+        // för att "RemoveMockUsers" är körd.
+
+
         public static Obj CountDomainsFromUserEmails()
         {
             Arr users = SQLQueryOne("SELECT SUBSTRING(email, INSTR(email, '@') + 1, length(email) AS domain, count(id) AS id FROM users GROUP BY domain");
@@ -137,5 +136,5 @@ public static class Utils
             }
             return domainsCounted;
         }
-        */
+    */
 }
