@@ -1,0 +1,25 @@
+Feature: Show all products when I choose "alla" in the menu
+
+  Scenario: Check that the "Alla"-category shows all products.
+    Given that I am on the product page
+    When I choose the category "Alla"
+    Then I should see the product "Smartphone"
+    And I should see the product "T-shirt"
+    And I should see the product "Jeans"
+    And I should see the product "Python Programming"
+    And I should see the product "The Great Gatsby"
+    And I should see the product "TV"
+    And I should see the product "Apple"
+    And I should see the product "Banana"
+    And I should see the product "Orange"
+    And I should see the product "Bread"
+    And I should see the product "Bed"
+    And I should see the product "Sofa"
+    And I should see the product "Table"
+    And I should see the product "Chair"
+    And I should see the product "Dog"
+    And I should see the product "Cat"
+    And I should see the product "Fish"
+    And I should see the product "Bird"
+    And I should see the product "Shorts"
+    And I should see the product "Dyndata Instructions"
