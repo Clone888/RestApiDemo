@@ -108,7 +108,9 @@ public static class Utils
 
     public static Obj CountDomainsFromUserEmails()
     {
-        Arr domainsInDB = SQLQuery("SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,COUNT(id) AS count FROM users GROUP BY domain;");
+        Arr domainsInDB = SQLQuery(@"SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain, COUNT(DISTINCT email) AS count
+                                    FROM users
+                                    GROUP BY domain;");
         Obj domainsCounted = Obj();
 
         foreach (var email in domainsInDB)
@@ -121,11 +123,11 @@ public static class Utils
         return domainsCounted;
     }
 
+    //Kommenterat ut detta stycket för att slippa få felmeddelande pga att det inte finns några domains 
+    // för att "RemoveMockUsers" är körd.
+
     /*
-        //Kommenterat ut detta stycket för att slippa få felmeddelande pga att det inte finns några domains 
-        // för att "RemoveMockUsers" är körd.
-
-
+KASSA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public static Obj CountDomainsFromUserEmails()
         {
             Arr users = SQLQueryOne("SELECT SUBSTRING(email, INSTR(email, '@') + 1, length(email) AS domain, count(id) AS id FROM users GROUP BY domain");
