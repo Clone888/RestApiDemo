@@ -65,7 +65,7 @@ public class UtilsTest(Xlog output)
 
     // Kommentera in/ut TestRemoveMockUsers. 
     // Beroende på hur mycket data som
-    //TestCountDomainsFromUserEmails ska ha att räkna på.
+    // TestCountDomainsFromUserEmails ska ha att räkna på.
 
     [Fact]
     public void TestRemoveMockUsers()
