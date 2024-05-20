@@ -2,9 +2,9 @@ name: Run unit tests
 
 on:
   push:
-    branches: [ "Xnew-features" ]
+    branches: [ "new-features" ]
   pull_request:
-    branches: [ "Xnew-features" ]
+    branches: [ "new-features" ]
 
 jobs:
 
