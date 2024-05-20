@@ -63,7 +63,7 @@ public class UtilsTest(Xlog output)
         Assert.Equal(expected, result);
     }
 
-    // Kommentera in TestRemoveMockUsers när testet ska köras så att 
+    // Kommentera in TestRemoveMockUsers när testet ska köras annars har att 
     // TestCountDomainsFromUserEmails har mer data att räkna på.
     /*
 
