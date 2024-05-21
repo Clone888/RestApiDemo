@@ -104,6 +104,9 @@ public class UtilsTest(Xlog output)
     [Fact]
     public void TestCountDomainsFromUserEmails()
     {
+        //Lägger till mockuser innan testet körs.
+        Utils.CreateMockUsers();
+
         Arr users = SQLQuery("SELECT * FROM users");
         Obj domainsInDB = Obj();
 
