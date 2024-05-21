@@ -2,9 +2,9 @@ name: Run unit tests
 
 on:
   push:
-    branches: [ "Xmain" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "Xmain" ]
+    branches: [ "main" ]
 
 jobs:
 
