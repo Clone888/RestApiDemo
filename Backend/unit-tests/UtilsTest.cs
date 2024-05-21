@@ -63,41 +63,40 @@ public class UtilsTest(Xlog output)
         Assert.Equal(expected, result);
     }
 
-    // Kommentera in TestRemoveMockUsers när testet ska köras så att 
-    // TestCountDomainsFromUserEmails har mer data att räkna på.
-    /*
+    // Kommentera in/ut TestRemoveMockUsers. 
+    // Beroende på hur mycket data som
+    // TestCountDomainsFromUserEmails ska ha att räkna på.
 
-        [Fact]
-        public void TestRemoveMockUsers()
-        {
-            //read a JSON-file
-            var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-            Arr mockUsers = JSON.Parse(read);
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
+        //read a JSON-file
+        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        Arr mockUsers = JSON.Parse(read);
 
-            //sql query
-            Arr usersInDb = SQLQuery("SELECT email FROM users");
+        //sql query
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
 
-            // Create a list of users based on user-email
-            Arr emailsInDb = usersInDb.Map(user => user.email);
+        // Create a list of users based on user-email
+        Arr emailsInDb = usersInDb.Map(user => user.email);
 
-            // filter and only keep the mockusers email already in db
-            Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
+        // filter and only keep the mockusers email already in db
+        Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
-            Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
+        Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
 
 
-            //get result from function
-            var result = Utils.RemoveMockUsers();
+        //get result from function
+        var result = Utils.RemoveMockUsers();
 
-            output.WriteLine($"The test expected that {mockUsersInDb.Length} users should be REMOVED.");
-            //Print all users that being removed without password
-            output.WriteLine($"And {JSON.Stringify(result)} users were REMOVED.");
+        output.WriteLine($"The test expected that {mockUsersInDb.Length} users should be REMOVED.");
+        //Print all users that being removed without password
+        output.WriteLine($"And {JSON.Stringify(result)} users were REMOVED.");
 
-            //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
-            Assert.Equivalent(mockUsersInDb, result);
-        }
+        //jämför mockUsersInDb med resultatet från Utils.RemoveMockUsers
+        Assert.Equivalent(mockUsersInDb, result);
+    }
 
-        */
 
     // Kommentera ut TestRemoveMockUsers, för att få fler domains att räkna på 
     //  i TestCountDomainsFromUserEmails.
