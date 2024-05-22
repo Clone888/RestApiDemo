@@ -2,9 +2,9 @@ name: Run unit tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "Xmain" ] # Ändra namnet till rätt branch så att Github Actions körs
   pull_request:
-    branches: [ "main" ]
+    branches: [ "Xmain" ] # Ändra namnet till rätt branch så att Github Actions körs
 
 jobs:
 
