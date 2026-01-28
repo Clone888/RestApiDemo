@@ -67,9 +67,18 @@ public static class FileServer
             object result = null;
             try
             {
-                result = Arr(Directory.GetFiles(Path.Combine(FPath, folder)))
-                    .Map(x => Arr(x.Split('/')).Pop())
-                    .Filter(x => Acl.Allow(context, "GET", "/content/" + x));
+                var rootPath = Path.GetFullPath(FPath);
+                var combinedPath = Path.GetFullPath(
+                    Path.Combine(rootPath, folder ?? string.Empty)
+                );
+
+                // Ensure the resolved path stays within the frontend root
+                if (combinedPath.StartsWith(rootPath + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+                {
+                    result = Arr(Directory.GetFiles(combinedPath))
+                        .Map(x => Arr(x.Split('/')).Pop())
+                        .Filter(x => Acl.Allow(context, "GET", "/content/" + x));
+                }
             }
             catch (Exception) { }
             return RestResult.Parse(context, result);
