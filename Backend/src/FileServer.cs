@@ -5,10 +5,12 @@ public static class FileServer
 
     public static void Start()
     {
-        // Convert frontendPath to an absolute path
-        FPath = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            Globals.frontendPath
+        // Convert frontendPath to an absolute, normalized path
+        FPath = Path.GetFullPath(
+            Path.Combine(
+                Directory.GetCurrentDirectory(),
+                Globals.frontendPath
+            )
         );
 
         HandleStatusCodes();
@@ -72,8 +74,10 @@ public static class FileServer
                     Path.Combine(rootPath, folder ?? string.Empty)
                 );
 
-                // Ensure the resolved path stays within the frontend root
-                if (combinedPath.StartsWith(rootPath + Path.DirectorySeparatorChar, StringComparison.Ordinal))
+                // Ensure the resolved path stays strictly within the frontend root
+                var rootPathWithSep = rootPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+                if (combinedPath.StartsWith(rootPathWithSep, StringComparison.OrdinalIgnoreCase)
+                    && combinedPath.Length > rootPathWithSep.Length)
                 {
                     result = Arr(Directory.GetFiles(combinedPath))
                         .Map(x => Arr(x.Split('/')).Pop())
