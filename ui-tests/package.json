@@ -13,8 +13,8 @@
     ]
   },
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "12.2",
+    "@badeball/cypress-cucumber-preprocessor": "24.0",
     "@cypress/webpack-preprocessor": "5.12",
-    "cypress": "10.7"
+    "cypress": "15.9"
   }
 }
